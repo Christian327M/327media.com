@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>327 Media</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body {
+  background: linear-gradient(180deg,#050b14,#0a1220);
+}
+.glass{
+  background:rgba(15,23,42,.7);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.08);
+  transition:.3s;
+}
+.glass:hover{
+  transform:translateY(-5px);
+  border-color:rgba(255,255,255,.2);
+}
+</style>
+</head>
+
+<body class="text-white">
+
+<header class="p-5 flex justify-between border-b border-white/10">
+<h1 class="text-2xl font-black">327 Media</h1>
+</header>
+
+<!-- HERO -->
+<section class="p-8 text-center">
+<h2 class="text-5xl font-black">Breaking News. Markets. Culture.</h2>
+<p class="text-gray-400 mt-3">Independent coverage built for the modern audience.</p>
+</section>
+
+<!-- YOUR ARTICLES (NEW FEATURE) -->
+<section class="p-6">
+<h2 class="text-3xl font-black mb-4">327 Media Featured</h2>
+
+<div class="grid md:grid-cols-3 gap-5">
+
+<a href="https://x.com/327Media1/status/2043666568538959999" target="_blank" class="glass rounded-2xl overflow-hidden">
+<img src="article-1.jpg" class="w-full h-48 object-cover">
+<div class="p-4">
+<h3 class="text-xl font-bold">Market Shock Reactions Begin</h3>
+<p class="text-gray-400 mt-2">Early reactions and analysis from developing financial shifts.</p>
+</div>
+</a>
+
+<a href="https://x.com/327Media1/status/2044658040113385882" target="_blank" class="glass rounded-2xl overflow-hidden">
+<img src="article-2.jpg" class="w-full h-48 object-cover">
+<div class="p-4">
+<h3 class="text-xl font-bold">Political Momentum Building</h3>
+<p class="text-gray-400 mt-2">Key developments shaping the next phase of the political cycle.</p>
+</div>
+</a>
+
+<a href="https://x.com/327Media1/status/2044658242656346602" target="_blank" class="glass rounded-2xl overflow-hidden">
+<img src="article-3.jpg" class="w-full h-48 object-cover">
+<div class="p-4">
+<h3 class="text-xl font-bold">Breaking Trends Across Media</h3>
+<p class="text-gray-400 mt-2">How narratives are shifting across major platforms.</p>
+</div>
+</a>
+
+</div>
+</section>
+
+<!-- NEWS -->
+<section class="p-6">
+<h2 class="text-3xl font-black mb-4">Top Headlines</h2>
+<div id="newsGrid" class="grid md:grid-cols-3 gap-5"></div>
+</section>
+
+<!-- SPORTS -->
+<section class="p-6 grid md:grid-cols-2 gap-6">
+<div class="glass p-4 rounded-2xl">
+<h3 class="text-xl font-bold">NBA Playoffs</h3>
+<img src="sports-nba.jpg" class="w-full h-48 object-contain bg-black p-2">
+</div>
+
+<div class="glass p-4 rounded-2xl">
+<h3 class="text-xl font-bold">UFC</h3>
+<img src="sports-ufc.jpg" class="w-full h-48 object-cover" style="object-position:50% 35%;">
+</div>
+</section>
+
+<!-- PODCAST -->
+<section class="p-6">
+<div class="glass p-6 rounded-2xl text-center">
+<h2 class="text-3xl font-black">CIA Podcast</h2>
+
+<p class="mt-3 text-gray-300">
+Real conversations. No filter. Politics, markets, culture.
+</p>
+
+<img src="podcast-main.jpg" class="w-full max-w-xl mx-auto mt-5 object-contain bg-black p-3">
+
+<div class="mt-6 flex justify-center gap-3">
+<a href="https://youtu.be/zP0T28wSa-E" target="_blank"
+class="bg-red-600 px-6 py-3 rounded-full font-bold">
+▶ Watch Episode
+</a>
+
+<a href="https://www.youtube.com/@CIApodcastTV" target="_blank"
+class="border px-6 py-3 rounded-full">
+YouTube Channel
+</a>
+</div>
+</div>
+</section>
+
+<!-- WRITE -->
+<section class="p-6">
+<div class="glass p-6 rounded-2xl">
+<h2 class="text-3xl font-bold">Write for 327 Media</h2>
+
+<p class="mt-3 text-gray-300">
+We’re building a platform for strong voices. Apply to write.
+</p>
+
+<div class="grid md:grid-cols-2 gap-4 mt-5">
+<a href="#" class="bg-blue-600 p-4 rounded-xl">Apply (Google Form)</a>
+<a href="mailto:327mediax@gmail.com" class="bg-yellow-600 p-4 rounded-xl">Email Us</a>
+</div>
+
+</div>
+</section>
+
+<footer class="p-6 text-center text-gray-400 border-t border-white/10">
+© 2026 327 Media
+</footer>
+
+<script>
+const feeds = [
+"https://www.reuters.com/rss",
+"https://apnews.com/rss",
+"http://rss.cnn.com/rss/cnn_latest.rss",
+"https://www.wired.com/feed/rss"
+];
+
+async function fetchNews(){
+let all=[];
+
+for(let f of feeds){
+try{
+let res=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent(f));
+let txt=await res.text();
+let xml=new DOMParser().parseFromString(txt,"text/xml");
+let items=xml.querySelectorAll("item");
+
+items.forEach(i=>{
+all.push({
+title:i.querySelector("title")?.textContent,
+link:i.querySelector("link")?.textContent
+});
+});
+}catch{}
+}
+
+// MIX
+let grouped={};
+all.forEach(n=>{
+let s=n.link.split("/")[2];
+if(!grouped[s]) grouped[s]=[];
+grouped[s].push(n);
+});
+
+let mixed=[];
+while(mixed.length<6){
+for(let k in grouped){
+if(grouped[k].length){
+mixed.push(grouped[k].shift());
+}
+}
+}
+
+document.getElementById("newsGrid").innerHTML=
+mixed.map(n=>`
+<a href="${n.link}" target="_blank" class="glass p-5 rounded-2xl">
+<h3 class="font-bold text-lg">${n.title}</h3>
+<p class="text-blue-400 mt-2">Read →</p>
+</a>
+`).join("");
+}
+
+fetchNews();
+</script>
+
+</body>
+</html>
