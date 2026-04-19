@@ -85,11 +85,31 @@
     .card-body-lg{padding:30px}
     .card-black{background:#000 !important;border-color:rgba(255,255,255,.1) !important;}
 
-    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch;} .stack{display:block}
+  .hero-grid{
+  display:grid;
+  grid-template-columns:1.35fr .85fr;
+  gap:24px;
+  align-items:stretch;
+}
 
     /* VIDEO — taller + 🔴 live dot */
-    .video-wrap{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--line);box-shadow:var(--shadow);background:#0b1636;min-height:560px;}
-    .video-wrap iframe{width:100%;height:100%;min-height:560px;border:0;display:block;}
+  .video-wrap{
+  position:relative;
+  overflow:hidden;
+  border-radius:22px;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  background:#0b1636;
+  min-height:640px;
+}
+
+.video-wrap iframe{
+  width:100%;
+  height:100%;
+  min-height:640px;
+  border:0;
+  display:block;
+}
     .live-dot{position:absolute;top:14px;left:14px;z-index:10;background:var(--red);color:#fff;font-size:.75rem;font-weight:900;letter-spacing:.14em;padding:6px 12px;border-radius:999px;pointer-events:none;animation:pulse-dot 2s infinite;}
     @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.5}}
 
@@ -101,8 +121,20 @@
     .home-side-red p,.home-side-blue p{margin:0;line-height:1.7;}
 
     /* QUICK ACCESS — BLACK links */
-    .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px;}
-    .quick-link{background:#000;border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:20px;transition:.2s ease;}
+    .quick-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+  margin-top:28px;
+}
+    .quick-link{
+  background:#000;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:22px;
+  padding:24px;
+  min-height:150px;
+  transition:.2s ease;
+}
     .quick-link:hover{transform:translateY(-2px);background:#1a1a1a;}
     .quick-link strong{display:block;margin-top:8px;font-size:1.06rem;}
     .quick-link span{display:block;margin-top:8px;color:var(--muted);line-height:1.55;}
@@ -188,6 +220,56 @@
 }
 
     .split-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;}
+    .split-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;}
+
+/* 👇 ADD RIGHT HERE */
+.mini-source-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:10px;
+}
+
+.mini-source-card{
+  display:block;
+  background:var(--panel2);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  overflow:hidden;
+  transition:.2s ease;
+}
+
+.mini-source-card:hover{
+  transform:translateY(-2px);
+  background:var(--soft);
+}
+
+.mini-source-card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  display:block;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.mini-source-card strong{
+  display:block;
+  padding:14px;
+  font-size:1rem;
+  font-weight:900;
+}
+
+@media(max-width:860px){
+  .mini-source-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* 👇 your original code continues */
+.media-image{height:260px;width:100%;object-fit:cover;border-bottom:1px solid var(--line);}
+.link-stack{display:grid;gap:12px;margin-top:8px;}
+.source-link{display:block;padding:14px 15px;border-radius:14px;background:var(--panel2);border:1px solid rgba(255,255,255,.08);line-height:1.5;}
+.source-link:hover{background:var(--soft)}
     .media-image{height:260px;width:100%;object-fit:cover;border-bottom:1px solid var(--line);}
     .link-stack{display:grid;gap:12px;margin-top:8px;}
     .source-link{display:block;padding:14px 15px;border-radius:14px;background:var(--panel2);border:1px solid rgba(255,255,255,.08);line-height:1.5;}
@@ -525,34 +607,57 @@
         </div>
       </div>
 
-      <div class="split-grid">
-        <div class="card">
-          <img src="left-media-main.jpg" alt="Left media coverage" class="media-image" />
-          <div class="card-body-lg">
-            <div class="eyebrow" style="margin-bottom:0;">Left Media Coverage</div>
-            <h3 style="margin:8px 0 10px;font-size:1.5rem;font-weight:900;">Mainstream &amp; left-leaning coverage</h3>
-            <div class="link-stack">
-              <a class="source-link" href="https://www.reuters.com/" target="_blank" rel="noopener noreferrer">Reuters — Breaking developments, global coverage, and market-moving headlines.</a>
-              <a class="source-link" href="https://www.cnn.com/" target="_blank" rel="noopener noreferrer">CNN — Major political and national stories driving the daily conversation.</a>
-              <a class="source-link" href="https://www.msnbc.com/" target="_blank" rel="noopener noreferrer">MSNBC — Cable-driven political analysis and commentary from the left.</a>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <img src="right-media-main.jpg" alt="Right media coverage" class="media-image" />
-          <div class="card-body-lg">
-            <div class="eyebrow" style="margin-bottom:0;">Right Media Coverage</div>
-            <h3 style="margin:8px 0 10px;font-size:1.5rem;font-weight:900;">Conservative &amp; right-leaning coverage</h3>
-            <div class="link-stack">
-              <a class="source-link" href="https://www.foxnews.com/" target="_blank" rel="noopener noreferrer">Fox News — Top U.S. stories, major political developments, and fast-moving breaking news.</a>
-              <a class="source-link" href="https://www.dailywire.com/" target="_blank" rel="noopener noreferrer">The Daily Wire — Commentary, politics, and cultural coverage with a sharper conservative edge.</a>
-              <a class="source-link" href="https://nypost.com/" target="_blank" rel="noopener noreferrer">New York Post — Punchy headlines, fast reads, and wider culture-cycle stories.</a>
-            </div>
-          </div>
-        </div>
-      </div>
+     <div class="split-grid">
+  <div class="card">
+    <img src="left-media-main.jpg" alt="Left media coverage" class="media-image" />
+    <div class="card-body-lg">
+      <div class="eyebrow" style="margin-bottom:0;">Left Media Coverage</div>
+      <h3 style="margin:8px 0 18px;font-size:1.5rem;font-weight:900;">Mainstream &amp; left-leaning coverage</h3>
 
-      <div class="source-grid">
+      <div class="mini-source-grid">
+        <a class="mini-source-card" href="https://www.reuters.com/" target="_blank" rel="noopener noreferrer">
+          <img src="reuters.jpg" alt="Reuters" />
+          <strong>Reuters</strong>
+        </a>
+
+        <a class="mini-source-card" href="https://www.cnn.com/" target="_blank" rel="noopener noreferrer">
+          <img src="cnn.jpg" alt="CNN" />
+          <strong>CNN</strong>
+        </a>
+
+        <a class="mini-source-card" href="https://www.msnbc.com/" target="_blank" rel="noopener noreferrer">
+          <img src="msnbc.jpg" alt="MSNBC" />
+          <strong>MSNBC</strong>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="right-media-main.jpg" alt="Right media coverage" class="media-image" />
+    <div class="card-body-lg">
+      <div class="eyebrow" style="margin-bottom:0;">Right Media Coverage</div>
+      <h3 style="margin:8px 0 18px;font-size:1.5rem;font-weight:900;">Conservative &amp; right-leaning coverage</h3>
+
+      <div class="mini-source-grid">
+        <a class="mini-source-card" href="https://www.foxnews.com/" target="_blank" rel="noopener noreferrer">
+          <img src="fox-news.jpg" alt="Fox News" />
+          <strong>Fox News</strong>
+        </a>
+
+        <a class="mini-source-card" href="https://www.dailywire.com/" target="_blank" rel="noopener noreferrer">
+          <img src="daily-wire.jpg" alt="The Daily Wire" />
+          <strong>The Daily Wire</strong>
+        </a>
+
+        <a class="mini-source-card" href="https://nypost.com/" target="_blank" rel="noopener noreferrer">
+          <img src="new-york-post.jpg" alt="New York Post" />
+          <strong>New York Post</strong>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
         <a class="source-card" href="https://www.reuters.com/" target="_blank" rel="noopener noreferrer"><img src="reuters.jpg" alt="Reuters" /><div class="content"><h3>Reuters</h3><p>Global wire coverage and fast breaking developments.</p><span class="btn btn-dark">Open Site</span></div></a>
         <a class="source-card" href="https://www.cnn.com/" target="_blank" rel="noopener noreferrer"><img src="cnn.jpg" alt="CNN" /><div class="content"><h3>CNN</h3><p>Major national and political stories driving the day.</p><span class="btn btn-dark">Open Site</span></div></a>
         <a class="source-card" href="https://www.msnbc.com/" target="_blank" rel="noopener noreferrer"><img src="msnbc.jpg" alt="MSNBC" /><div class="content"><h3>MSNBC</h3><p>Political analysis and left-leaning commentary.</p><span class="btn btn-dark">Open Site</span></div></a>
