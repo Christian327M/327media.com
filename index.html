@@ -220,7 +220,47 @@
 }
 
     .split-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;}
-    .split-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;}
+    .mini-source-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:10px;
+}
+
+.mini-source-card{
+  display:block;
+  background:var(--panel2);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  overflow:hidden;
+  transition:.2s ease;
+}
+
+.mini-source-card:hover{
+  transform:translateY(-2px);
+  background:var(--soft);
+}
+
+.mini-source-card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  display:block;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.mini-source-card strong{
+  display:block;
+  padding:14px;
+  font-size:1rem;
+  font-weight:900;
+}
+
+@media(max-width:860px){
+  .mini-source-grid{
+    grid-template-columns:1fr;
+  }
+}
 
 /* 👇 ADD RIGHT HERE */
 .mini-source-grid{
@@ -1044,36 +1084,42 @@
     `).join('');
   }
 
-  async function fetchNews() {
-    try {
-      const feeds = [
-        { url: 'https://feeds.reuters.com/reuters/topNews', source: 'Reuters' },
-        { url: 'https://rss.foxnews.com/fn/latest/feeds/atn', source: 'Fox News' },
-        { url: 'https://rss.cnn.com/rss/edition.rss', source: 'CNN' }
-      ];
+async function fetchNews() {
+  try {
+    const feeds = [
+      { url: 'https://feeds.reuters.com/reuters/topNews', source: 'Reuters' },
+      { url: 'https://rss.foxnews.com/fn/latest/feeds/atn', source: 'Fox News' },
+      { url: 'https://rss.cnn.com/rss/edition.rss', source: 'CNN' }
+    ];
 
-      const f = feeds[Math.floor(Math.random() * feeds.length)];
-      const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(f.url)}&count=8`);
+    const requests = feeds.map(async (f) => {
+      const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(f.url)}&count=4`);
       const d = await r.json();
 
       if (d.status === 'ok' && d.items?.length) {
-        const it = d.items.slice(0, 8).map(i => ({
+        return d.items.slice(0, 4).map(i => ({
           title: i.title,
           url: i.link,
           source: f.source,
           image: i.thumbnail || fallbackImage(f.source),
           description: stripHtml(i.description || i.content || "").slice(0, 140)
         }));
-
-        renderArt(it);
-        TK.splice(0, TK.length, ...it.map(i => i.title));
-      } else {
-        throw new Error("Feed failed");
       }
-    } catch {
-      renderArt(FB);
-    }
+
+      return [];
+    });
+
+    const groups = await Promise.all(requests);
+    const it = groups.flat().slice(0, 9);
+
+    if (!it.length) throw new Error("Feed failed");
+
+    renderArt(it);
+    TK.splice(0, TK.length, ...it.slice(0, 8).map(i => i.title));
+  } catch {
+    renderArt(FB);
   }
+}
 
   rotateTick();
   setInterval(rotateTick, 5000);
