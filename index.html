@@ -161,7 +161,7 @@
   border:1px solid var(--line);
   border-radius:18px;
   padding:14px;
-  max-height:720px;
+  max-height:760px;
   overflow-y:auto;
   margin-top:14px;
 }
@@ -219,6 +219,15 @@
   text-align:center;
 }
 
+    @media(max-width:860px){
+  .live-article-item{
+    grid-template-columns:1fr;
+  }
+
+  .live-article-thumb{
+    height:180px;
+  }
+}
     .split-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;}
     .mini-source-grid{
   display:grid;
@@ -1020,16 +1029,6 @@
     return (div.textContent || div.innerText || "").trim();
   }
 
-  function fallbackImage(source = "") {
-    if (source === "Bloomberg") return "reuters.jpg";
-    if (source === "BBC") return "left-media-main.jpg";
-    if (source === "Associated Press") return "left-media-main.jpg";
-    if (source === "Yahoo News") return "cnn.jpg";
-    if (source === "Wired") return "left-media-main.jpg";
-    if (source === "ESPN") return "sports-nba.jpg";
-    return "left-media-main.jpg";
-  }
-
   function renderArt(items) {
     const b = document.getElementById('liveArticles');
     if (!b) return;
@@ -1037,7 +1036,7 @@
     if (!items.length) {
       b.innerHTML = `
         <div class="live-article-loading">
-          No live articles loaded right now. Hit Refresh to try again.
+          No real image articles loaded right now. Hit Refresh to try again.
         </div>
       `;
       return;
@@ -1046,12 +1045,7 @@
     b.innerHTML = items.map(i => `
       <div class="live-article-item">
         <a href="${i.url}" target="_blank" rel="noopener noreferrer">
-          <img
-            class="live-article-thumb"
-            src="${i.image}"
-            alt="${i.title}"
-            onerror="this.src='left-media-main.jpg'"
-          >
+          <img class="live-article-thumb" src="${i.image}" alt="${i.title}">
         </a>
         <div class="live-article-copy">
           <div class="src-tag">${i.source}</div>
@@ -1081,7 +1075,7 @@
 
   async function fetchOneFeed(feed) {
     try {
-      const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}&count=6`);
+      const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}&count=8`);
       const d = await r.json();
 
       if (d.status !== 'ok' || !d.items?.length) return [];
@@ -1093,7 +1087,7 @@
           const ageDays = (Date.now() - pub.getTime()) / (1000 * 60 * 60 * 24);
           return ageDays <= 7;
         })
-        .slice(0, 2);
+        .slice(0, 4);
 
       const mapped = await Promise.all(
         freshItems.map(async (i) => {
@@ -1107,17 +1101,19 @@
             image = await tryGetOgImage(i.link);
           }
 
+          if (!image) return null;
+
           return {
             title: i.title,
             url: i.link,
             source: feed.source,
-            image: image || fallbackImage(feed.source),
+            image,
             description: stripHtml(i.description || i.content || "").slice(0, 140)
           };
         })
       );
 
-      return mapped;
+      return mapped.filter(Boolean);
     } catch {
       return [];
     }
@@ -1125,16 +1121,18 @@
 
   async function fetchNews() {
     const feeds = [
-      { source: "Bloomberg", url: "https://feeds.bloomberg.com/markets/news.rss" },
-      { source: "Wired", url: "https://www.wired.com/feed/rss" },
-      { source: "ESPN", url: "https://www.espn.com/espn/rss/news" },
-      { source: "Yahoo News", url: "https://news.yahoo.com/rss/" },
       { source: "BBC", url: "https://feeds.bbci.co.uk/news/rss.xml" },
-      { source: "Associated Press", url: "https://apnews.com/hub/ap-top-news?output=rss" }
+      { source: "Associated Press", url: "https://apnews.com/hub/apf-topnews?output=rss" },
+      { source: "Yahoo News", url: "https://news.yahoo.com/rss/" },
+      { source: "ESPN", url: "https://www.espn.com/espn/rss/news" },
+      { source: "Wired", url: "https://www.wired.com/feed/rss" },
+      { source: "Bloomberg", url: "https://feeds.bloomberg.com/markets/news.rss" }
     ];
 
-    document.getElementById('liveArticles').innerHTML =
-      '<div class="live-article-loading">Loading live articles...</div>';
+    const box = document.getElementById('liveArticles');
+    if (box) {
+      box.innerHTML = '<div class="live-article-loading">Loading live articles...</div>';
+    }
 
     const groups = await Promise.all(feeds.map(fetchOneFeed));
     const items = groups.flat().slice(0, 6);
