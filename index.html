@@ -1001,44 +1001,34 @@
 <script>
   const FB = [
     {
-      title: "Markets rally as investors await Federal Reserve decision",
-      source: "Reuters",
-      url: "https://reuters.com",
+      title: "Live global headlines are updating now",
+      source: "BBC",
+      url: "https://www.bbc.com/news",
+      image: "left-media-main.jpg",
+      description: "Refresh for the latest real headlines from major outlets."
+    },
+    {
+      title: "Business and market stories are moving across major outlets",
+      source: "Bloomberg",
+      url: "https://www.bloomberg.com/",
       image: "reuters.jpg",
-      description: "Breaking market coverage and investor reaction as policy expectations shift."
+      description: "Track finance, markets, and economic headlines in one place."
     },
     {
-      title: "White House releases new executive actions on trade policy",
-      source: "Fox News",
-      url: "https://foxnews.com",
-      image: "fox-news.jpg",
-      description: "Latest White House and political developments as trade policy stays in focus."
-    },
-    {
-      title: "NBA playoffs bracket takes shape with late-season standings",
-      source: "CNN",
-      url: "https://cnn.com",
-      image: "cnn.jpg",
-      description: "Sports and national coverage with the latest headlines shaping the day."
-    },
-    {
-      title: "Bitcoin holds above key support amid global uncertainty",
-      source: "Reuters",
-      url: "https://reuters.com",
-      image: "reuters.jpg",
-      description: "Crypto markets remain active as traders watch risk sentiment and macro headlines."
+      title: "Sports, politics, tech, and breaking coverage refresh here",
+      source: "ESPN",
+      url: "https://www.espn.com/",
+      image: "sports-nba.jpg",
+      description: "Browse live headlines and click through to the full stories."
     }
   ];
 
   const TK = [
-    "Markets open higher as Fed signals potential rate cuts",
-    "White House issues new statement on trade negotiations",
-    "NBA playoffs: top seeds advance after dominant performances",
-    "Bitcoin surges past key resistance level",
-    "New executive orders signed — details emerging",
-    "Breaking: major geopolitical developments in focus today",
-    "Sports: UFC main event sold out — fight week begins",
-    "Markets: S&P 500 approaches all-time highs"
+    "Live global headlines updating now",
+    "Refresh for the newest real stories",
+    "BBC, AP, Yahoo, ESPN, Wired, and Bloomberg updates",
+    "Markets, politics, sports, and tech in one live feed",
+    "Latest article photos and headlines loading live"
   ];
 
   let ti = 0;
@@ -1054,15 +1044,15 @@
     return (div.textContent || div.innerText || "").trim();
   }
 
-function fallbackImage(source = "") {
-  if (source === "Bloomberg") return "reuters.jpg";
-  if (source === "BBC") return "left-media-main.jpg";
-  if (source === "Associated Press") return "left-media-main.jpg";
-  if (source === "Yahoo News") return "cnn.jpg";
-  if (source === "Wired") return "left-media-main.jpg";
-  if (source === "ESPN") return "sports-nba.jpg";
-  return "left-media-main.jpg";
-}
+  function fallbackImage(source = "") {
+    if (source === "Bloomberg") return "reuters.jpg";
+    if (source === "BBC") return "left-media-main.jpg";
+    if (source === "Associated Press") return "left-media-main.jpg";
+    if (source === "Yahoo News") return "cnn.jpg";
+    if (source === "Wired") return "left-media-main.jpg";
+    if (source === "ESPN") return "sports-nba.jpg";
+    return "left-media-main.jpg";
+  }
 
   function renderArt(items) {
     const b = document.getElementById('liveArticles');
@@ -1082,8 +1072,35 @@ function fallbackImage(source = "") {
     `).join('');
   }
 
-async function fetchNews() {
-  try {
+  async function fetchOneFeed(f) {
+    try {
+      const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(f.url)}&count=3`);
+      const d = await r.json();
+
+      if (d.status === 'ok' && d.items?.length) {
+        return d.items
+          .filter(i => {
+            const pub = i.pubDate ? new Date(i.pubDate) : null;
+            if (!pub || Number.isNaN(pub.getTime())) return true;
+            const ageDays = (Date.now() - pub.getTime()) / (1000 * 60 * 60 * 24);
+            return ageDays <= 7;
+          })
+          .slice(0, 3)
+          .map(i => ({
+            title: i.title,
+            url: i.link,
+            source: f.source,
+            image: i.thumbnail || fallbackImage(f.source),
+            description: stripHtml(i.description || i.content || "").slice(0, 140)
+          }));
+      }
+    } catch (e) {
+      return [];
+    }
+    return [];
+  }
+
+  async function fetchNews() {
     const feeds = [
       { url: 'https://feeds.bbci.co.uk/news/rss.xml', source: 'BBC' },
       { url: 'https://apnews.com/hub/ap-top-news?output=rss', source: 'Associated Press' },
@@ -1093,46 +1110,16 @@ async function fetchNews() {
       { url: 'https://feeds.bloomberg.com/markets/news.rss', source: 'Bloomberg' }
     ];
 
-    const requests = feeds.map(async (f) => {
-      try {
-        const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(f.url)}&count=3`);
-        const d = await r.json();
+    const groups = await Promise.all(feeds.map(fetchOneFeed));
+    const items = groups.flat().slice(0, 12);
 
-        if (d.status === 'ok' && d.items?.length) {
-          return d.items
-            .filter(i => {
-              const pub = i.pubDate ? new Date(i.pubDate) : null;
-              if (!pub || Number.isNaN(pub.getTime())) return true;
-              const ageDays = (Date.now() - pub.getTime()) / (1000 * 60 * 60 * 24);
-              return ageDays <= 7;
-            })
-            .slice(0, 3)
-            .map(i => ({
-              title: i.title,
-              url: i.link,
-              source: f.source,
-              image: i.thumbnail || fallbackImage(f.source),
-              description: stripHtml(i.description || i.content || "").slice(0, 140)
-            }));
-        }
-      } catch (e) {
-        return [];
-      }
-
-      return [];
-    });
-
-    const groups = await Promise.all(requests);
-    const it = groups.flat().slice(0, 12);
-
-    if (!it.length) throw new Error("Feed failed");
-
-    renderArt(it);
-    TK.splice(0, TK.length, ...it.slice(0, 8).map(i => i.title));
-  } catch {
-    renderArt(FB);
+    if (items.length) {
+      renderArt(items);
+      TK.splice(0, TK.length, ...items.slice(0, 8).map(i => i.title));
+    } else {
+      renderArt(FB);
+    }
   }
-}
 
   rotateTick();
   setInterval(rotateTick, 5000);
