@@ -932,6 +932,48 @@
   }
 }
 
+
+/* SPORTS FALLBACK / SETUP CARDS */
+.sports-setup-banner{
+  background:rgba(245,158,11,.12);
+  border:1px solid rgba(245,158,11,.28);
+  color:#fde68a;
+  border-radius:20px;
+  padding:18px 20px;
+  line-height:1.7;
+  box-shadow:var(--shadow);
+}
+.sports-setup-banner strong{color:#fff}
+.sports-placeholder-box{
+  display:grid;
+  gap:14px;
+  margin-top:14px;
+}
+.sports-placeholder-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:16px;
+}
+.sports-placeholder-card strong{
+  display:block;
+  font-size:1rem;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.sports-placeholder-card span{
+  display:block;
+  color:var(--muted);
+  line-height:1.55;
+  font-size:.92rem;
+}
+.sports-placeholder-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:10px;
+}
+
 </style>
 </head>
 <body>
@@ -1304,6 +1346,9 @@
       <p class="section-sub">Live scoreboards, NBA playoffs, league tabs, standings, and fast daily sports coverage in a cleaner professional layout.</p>
 
       <div class="sports-shell">
+      <div class="sports-setup-banner">
+        <strong>Why the boxes looked empty:</strong> the sports page design is live, but the real widget feed still needs a valid sports-data account, domain whitelisting, and widget IDs. Until then, the sections below show setup-ready placeholders and official links instead of blank space.
+      </div>
 
         <div class="sports-hero">
           <div class="sports-hero-inner">
@@ -1418,13 +1463,33 @@
                   <div class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">NBA Live Scores</div>
                     <p class="sports-widget-note">Paste your official Sportradar NBA scoreboard widget here.</p>
-                    <div id="sr-nba-scoreboard"></div>
+                    <div <div id="sr-nba-scoreboard">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect NBA live scoreboard</strong>
+                          <span>Replace this helper card with your real widget snippet when your vendor account is ready.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-dark" href="https://sports.yahoo.com/nba/scoreboard/" target="_blank" rel="noopener noreferrer">NBA Scores</a><a class="btn btn-outline" href="https://www.cbssports.com/nba/scoreboard/" target="_blank" rel="noopener noreferrer">CBS Scores</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div id="sports-bracket" class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">2026 NBA Playoffs Bracket</div>
                     <p class="sports-widget-note">Paste your official Sportradar NBA Playoffs Bracket widget here so this panel updates as the postseason changes.</p>
-                    <div id="sr-nba-bracket"></div>
+                    <div <div id="sr-nba-bracket">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect 2026 NBA playoff bracket</strong>
+                          <span>This is the right slot for a live bracket widget or API-powered custom bracket module.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-primary" href="https://www.nba.com/playoffs/2026/bracket" target="_blank" rel="noopener noreferrer">Official Bracket</a><a class="btn btn-dark" href="https://sports.yahoo.com/nba/playoffs/" target="_blank" rel="noopener noreferrer">Yahoo Playoffs</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="sports-links-grid">
@@ -1447,13 +1512,33 @@
                   <div class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">NFL Scoreboard</div>
                     <p class="sports-widget-note">Paste your official Sportradar NFL scoreboard widget here.</p>
-                    <div id="sr-nfl-scoreboard"></div>
+                    <div <div id="sr-nfl-scoreboard">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect NFL scoreboard</strong>
+                          <span>Use this panel for NFL live scores, weekly schedule, and featured games.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-dark" href="https://sports.yahoo.com/nfl/" target="_blank" rel="noopener noreferrer">NFL Hub</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">NFL Standings</div>
                     <p class="sports-widget-note">Paste your official Sportradar NFL standings widget here.</p>
-                    <div id="sr-nfl-standings"></div>
+                    <div <div id="sr-nfl-standings">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect NFL standings</strong>
+                          <span>Standings, divisions, and playoff race panel goes here.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-outline" href="https://www.foxsports.com/nfl/standings" target="_blank" rel="noopener noreferrer">Standings Reference</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1463,13 +1548,33 @@
                   <div class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">MLB Scoreboard</div>
                     <p class="sports-widget-note">Paste your official Sportradar MLB scoreboard widget here.</p>
-                    <div id="sr-mlb-scoreboard"></div>
+                    <div <div id="sr-mlb-scoreboard">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect MLB scoreboard</strong>
+                          <span>Daily MLB games, inning status, and final results belong here.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-dark" href="https://sports.yahoo.com/mlb/scoreboard/" target="_blank" rel="noopener noreferrer">MLB Scores</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">MLB Standings / Season Scores</div>
                     <p class="sports-widget-note">Paste your official MLB standings or season scores widget here.</p>
-                    <div id="sr-mlb-standings"></div>
+                    <div <div id="sr-mlb-standings">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect MLB standings or season scores</strong>
+                          <span>Use this for divisions, records, and season tables.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-outline" href="https://www.foxsports.com/mlb/standings" target="_blank" rel="noopener noreferrer">Standings Reference</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1479,13 +1584,33 @@
                   <div class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">NHL Scoreboard</div>
                     <p class="sports-widget-note">Paste your official Sportradar NHL scoreboard widget here.</p>
-                    <div id="sr-nhl-scoreboard"></div>
+                    <div <div id="sr-nhl-scoreboard">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect NHL scoreboard</strong>
+                          <span>Use this panel for live NHL games, finals, and overtime status.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-dark" href="https://sports.yahoo.com/nhl/scoreboard/" target="_blank" rel="noopener noreferrer">NHL Scores</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">NHL Standings</div>
                     <p class="sports-widget-note">Paste your official Sportradar NHL standings widget here.</p>
-                    <div id="sr-nhl-standings"></div>
+                    <div <div id="sr-nhl-standings">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect NHL standings</strong>
+                          <span>Conference and division standings go here.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-outline" href="https://www.foxsports.com/nhl/standings" target="_blank" rel="noopener noreferrer">Standings Reference</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1495,13 +1620,33 @@
                   <div class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">WNBA Scoreboard</div>
                     <p class="sports-widget-note">Paste your official Sportradar WNBA scoreboard widget here.</p>
-                    <div id="sr-wnba-scoreboard"></div>
+                    <div <div id="sr-wnba-scoreboard">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect WNBA scoreboard</strong>
+                          <span>Daily WNBA game slate and live scores go here.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-dark" href="https://sports.yahoo.com/wnba/scoreboard/" target="_blank" rel="noopener noreferrer">WNBA Scores</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="sports-widget-shell sports-widget-pad">
                     <div class="eyebrow" style="margin-bottom:0;">WNBA Standings / Playoffs</div>
                     <p class="sports-widget-note">Paste your official WNBA standings or postseason widget here.</p>
-                    <div id="sr-wnba-standings"></div>
+                    <div <div id="sr-wnba-standings">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect WNBA standings / playoffs</strong>
+                          <span>Use this for standings or playoff race coverage.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-outline" href="https://www.foxsports.com/wnba/standings" target="_blank" rel="noopener noreferrer">Standings Reference</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1521,13 +1666,33 @@
                 <div class="sports-widget-shell sports-widget-pad">
                   <div class="eyebrow" style="margin-bottom:0;">Live Score Ticker</div>
                   <p class="sports-widget-note">Paste your official Sportradar score ticker widget here to create a constant live sports rail.</p>
-                  <div id="sr-score-ticker"></div>
+                  <div <div id="sr-score-ticker">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect live multi-league ticker</strong>
+                          <span>This is where your always-on headline scoreboard strip goes once live widgets are enabled.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-dark" href="#sports-live-scores">Use Quick Score Rail</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
 
                 <div class="sports-widget-shell sports-widget-pad">
                   <div class="eyebrow" style="margin-bottom:0;">Featured Live Game Tracker</div>
                   <p class="sports-widget-note">Paste a live game tracker or featured matchup widget here for marquee games.</p>
-                  <div id="sr-featured-tracker"></div>
+                  <div <div id="sr-featured-tracker">
+                      <div class="sports-placeholder-box">
+                        <div class="sports-placeholder-card">
+                          <strong>Connect featured live game tracker</strong>
+                          <span>Best used for marquee playoff games, rivalry matchups, or finals.</span>
+                          <div class="sports-placeholder-actions">
+                            <a class="btn btn-outline" href="https://327media.org/#sports" target="_blank" rel="noopener noreferrer">Featured Slot</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
 
                 <div class="sports-links-grid">
@@ -2365,12 +2530,15 @@ const allItems = mixed;
 </script>
 
 <!-- SPORTRADAR LOADER: REPLACE YOUR_CLIENT_ALIAS WITH YOUR REAL ALIAS -->
+<!-- LIVE SPORTS WIDGET LOADER
+Replace YOUR_CLIENT_ALIAS with your real vendor alias and then add your official widget snippets in the sports boxes above.
 <script
   type="application/javascript"
   src="https://widgets.media.sportradar.com/YOUR_CLIENT_ALIAS/widgetloader"
   data-sr-language="en_us"
   async>
 </script>
+-->
 
 </body>
 </html>
