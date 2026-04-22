@@ -974,6 +974,22 @@
   margin-top:10px;
 }
 
+
+.sports-live-list{display:grid;gap:14px;margin-top:14px;}
+.sports-live-list.compact .sports-game-card{padding:14px;min-height:auto;}
+.sports-game-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px;display:grid;gap:12px;}
+.sports-game-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;}
+.sports-league-badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:999px;background:rgba(225,6,0,.16);border:1px solid rgba(225,6,0,.28);font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;}
+.sports-status{font-size:.82rem;color:#9ad0ff;font-weight:800;}
+.sports-status.final{color:#7fff9e;}
+.sports-status.live{color:#ffd166;}
+.sports-game-lines{display:grid;gap:10px;}
+.sports-team-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:14px;padding:12px 14px;}
+.sports-team-name{font-weight:800;line-height:1.3;}
+.sports-team-score{font-size:1.35rem;font-weight:950;}
+.sports-game-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;color:var(--muted2);font-size:.85rem;}
+.sports-empty-state{padding:18px;border-radius:18px;background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.14);color:var(--muted);line-height:1.7;}
+
 </style>
 </head>
 <body>
@@ -1347,7 +1363,7 @@
 
       <div class="sports-shell">
       <div class="sports-setup-banner">
-        <strong>Why the boxes looked empty:</strong> the sports page design is live, but the real widget feed still needs a valid sports-data account, domain whitelisting, and widget IDs. Until then, the sections below show setup-ready placeholders and official links instead of blank space.
+        <strong>Free mode is now active:</strong> this sports hub uses your API-Sports key directly in the browser for live scoreboards. That works, but because this is a public site, your free quota can be used up quickly and the key is exposed in the page source. Rotate the key later and move it behind a serverless function when you can.
       </div>
 
         <div class="sports-hero">
@@ -1458,241 +1474,21 @@
             </div>
 
             <div class="sports-panel-body">
-              <div class="sports-league-panel active" data-sports-panel="nba">
-                <div class="sports-panel-stack">
-                  <div class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">NBA Live Scores</div>
-                    <p class="sports-widget-note">Paste your official Sportradar NBA scoreboard widget here.</p>
-                    <div <div id="sr-nba-scoreboard">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect NBA live scoreboard</strong>
-                          <span>Replace this helper card with your real widget snippet when your vendor account is ready.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-dark" href="https://sports.yahoo.com/nba/scoreboard/" target="_blank" rel="noopener noreferrer">NBA Scores</a><a class="btn btn-outline" href="https://www.cbssports.com/nba/scoreboard/" target="_blank" rel="noopener noreferrer">CBS Scores</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div id="sports-bracket" class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">2026 NBA Playoffs Bracket</div>
-                    <p class="sports-widget-note">Paste your official Sportradar NBA Playoffs Bracket widget here so this panel updates as the postseason changes.</p>
-                    <div <div id="sr-nba-bracket">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect 2026 NBA playoff bracket</strong>
-                          <span>This is the right slot for a live bracket widget or API-powered custom bracket module.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-primary" href="https://www.nba.com/playoffs/2026/bracket" target="_blank" rel="noopener noreferrer">Official Bracket</a><a class="btn btn-dark" href="https://sports.yahoo.com/nba/playoffs/" target="_blank" rel="noopener noreferrer">Yahoo Playoffs</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="sports-links-grid">
-                    <a class="sports-link-card" href="https://www.nba.com/playoffs/2026/bracket" target="_blank" rel="noopener noreferrer">
-                      <span class="small">Official</span>
-                      <strong>NBA Playoffs</strong>
-                      <span>Official bracket and postseason coverage.</span>
-                    </a>
-                    <a class="sports-link-card" href="https://sports.yahoo.com/nba/scoreboard/" target="_blank" rel="noopener noreferrer">
-                      <span class="small">Reference</span>
-                      <strong>NBA Scoreboard</strong>
-                      <span>Reference source while you wire your live feed.</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="sports-league-panel" data-sports-panel="nfl">
-                <div class="sports-panel-stack">
-                  <div class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">NFL Scoreboard</div>
-                    <p class="sports-widget-note">Paste your official Sportradar NFL scoreboard widget here.</p>
-                    <div <div id="sr-nfl-scoreboard">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect NFL scoreboard</strong>
-                          <span>Use this panel for NFL live scores, weekly schedule, and featured games.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-dark" href="https://sports.yahoo.com/nfl/" target="_blank" rel="noopener noreferrer">NFL Hub</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">NFL Standings</div>
-                    <p class="sports-widget-note">Paste your official Sportradar NFL standings widget here.</p>
-                    <div <div id="sr-nfl-standings">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect NFL standings</strong>
-                          <span>Standings, divisions, and playoff race panel goes here.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-outline" href="https://www.foxsports.com/nfl/standings" target="_blank" rel="noopener noreferrer">Standings Reference</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="sports-league-panel" data-sports-panel="mlb">
-                <div class="sports-panel-stack">
-                  <div class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">MLB Scoreboard</div>
-                    <p class="sports-widget-note">Paste your official Sportradar MLB scoreboard widget here.</p>
-                    <div <div id="sr-mlb-scoreboard">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect MLB scoreboard</strong>
-                          <span>Daily MLB games, inning status, and final results belong here.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-dark" href="https://sports.yahoo.com/mlb/scoreboard/" target="_blank" rel="noopener noreferrer">MLB Scores</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">MLB Standings / Season Scores</div>
-                    <p class="sports-widget-note">Paste your official MLB standings or season scores widget here.</p>
-                    <div <div id="sr-mlb-standings">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect MLB standings or season scores</strong>
-                          <span>Use this for divisions, records, and season tables.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-outline" href="https://www.foxsports.com/mlb/standings" target="_blank" rel="noopener noreferrer">Standings Reference</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="sports-league-panel" data-sports-panel="nhl">
-                <div class="sports-panel-stack">
-                  <div class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">NHL Scoreboard</div>
-                    <p class="sports-widget-note">Paste your official Sportradar NHL scoreboard widget here.</p>
-                    <div <div id="sr-nhl-scoreboard">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect NHL scoreboard</strong>
-                          <span>Use this panel for live NHL games, finals, and overtime status.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-dark" href="https://sports.yahoo.com/nhl/scoreboard/" target="_blank" rel="noopener noreferrer">NHL Scores</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">NHL Standings</div>
-                    <p class="sports-widget-note">Paste your official Sportradar NHL standings widget here.</p>
-                    <div <div id="sr-nhl-standings">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect NHL standings</strong>
-                          <span>Conference and division standings go here.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-outline" href="https://www.foxsports.com/nhl/standings" target="_blank" rel="noopener noreferrer">Standings Reference</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="sports-league-panel" data-sports-panel="wnba">
-                <div class="sports-panel-stack">
-                  <div class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">WNBA Scoreboard</div>
-                    <p class="sports-widget-note">Paste your official Sportradar WNBA scoreboard widget here.</p>
-                    <div <div id="sr-wnba-scoreboard">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect WNBA scoreboard</strong>
-                          <span>Daily WNBA game slate and live scores go here.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-dark" href="https://sports.yahoo.com/wnba/scoreboard/" target="_blank" rel="noopener noreferrer">WNBA Scores</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="sports-widget-shell sports-widget-pad">
-                    <div class="eyebrow" style="margin-bottom:0;">WNBA Standings / Playoffs</div>
-                    <p class="sports-widget-note">Paste your official WNBA standings or postseason widget here.</p>
-                    <div <div id="sr-wnba-standings">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect WNBA standings / playoffs</strong>
-                          <span>Use this for standings or playoff race coverage.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-outline" href="https://www.foxsports.com/wnba/standings" target="_blank" rel="noopener noreferrer">Standings Reference</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="sports-panel">
-            <div class="sports-panel-header">
-              <div>
-                <h4>327 Media Sports Sidebar</h4>
-                <p>Use this side column for featured widgets, standings, live tracker modules, or promoted stories.</p>
-              </div>
-            </div>
-
-            <div class="sports-panel-body">
               <div class="sports-panel-stack">
                 <div class="sports-widget-shell sports-widget-pad">
-                  <div class="eyebrow" style="margin-bottom:0;">Live Score Ticker</div>
-                  <p class="sports-widget-note">Paste your official Sportradar score ticker widget here to create a constant live sports rail.</p>
-                  <div <div id="sr-score-ticker">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect live multi-league ticker</strong>
-                          <span>This is where your always-on headline scoreboard strip goes once live widgets are enabled.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-dark" href="#sports-live-scores">Use Quick Score Rail</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div class="eyebrow" style="margin-bottom:0;">Quick Multi-League Rail</div>
+                  <p class="sports-widget-note">This rail shows a few headline matchups from the currently loaded league to save free API requests.</p>
+                  <div id="sports-quick-rail" class="sports-live-list compact"></div>
                 </div>
 
                 <div class="sports-widget-shell sports-widget-pad">
-                  <div class="eyebrow" style="margin-bottom:0;">Featured Live Game Tracker</div>
-                  <p class="sports-widget-note">Paste a live game tracker or featured matchup widget here for marquee games.</p>
-                  <div <div id="sr-featured-tracker">
-                      <div class="sports-placeholder-box">
-                        <div class="sports-placeholder-card">
-                          <strong>Connect featured live game tracker</strong>
-                          <span>Best used for marquee playoff games, rivalry matchups, or finals.</span>
-                          <div class="sports-placeholder-actions">
-                            <a class="btn btn-outline" href="https://327media.org/#sports" target="_blank" rel="noopener noreferrer">Featured Slot</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div class="eyebrow" style="margin-bottom:0;">Refresh Controls</div>
+                  <p class="sports-widget-note">Free plans are limited, so this sports page refreshes the active league only. Use manual refresh when you need a fresh pull.</p>
+                  <div class="sports-placeholder-actions">
+                    <button class="btn btn-primary" id="sportsRefreshBtn" type="button">Refresh Active League</button>
+                    <button class="btn btn-outline" id="sportsRefreshAllBtn" type="button">Refresh All Leagues</button>
+                  </div>
+                  <p class="sports-disclaimer" id="sportsQuotaNote">Free API keys are public on static sites. Rotate this key later and move it behind a backend when you can.</p>
                 </div>
 
                 <div class="sports-links-grid">
@@ -2499,46 +2295,277 @@ const allItems = mixed;
 
 
 
-<!-- 327 MEDIA SPORTS TABS -->
+<!-- 327 MEDIA SPORTS TABS + LIVE API SPORTS -->
 <script>
   (function () {
+    const SPORTS_API_KEY = '7d8d1ab645e92235b445a0e325c7511c';
+    const SPORTS_CONFIG = {
+      nba: {
+        boardId: 'nba-live-board',
+        railLabel: 'NBA',
+        fetcher: fetchBasketballGames,
+        filter: game => {
+          const name = ((game.league && game.league.name) || '').toUpperCase();
+          return name.includes('NBA') && !name.includes('WNBA');
+        },
+        playoffFilter: game => {
+          const stage = (((game.stage || '') + ' ' + (game.status?.long || '') + ' ' + ((game.league && game.league.name) || ''))).toUpperCase();
+          return stage.includes('PLAYOFF') || stage.includes('FINAL') || stage.includes('POSTSEASON');
+        }
+      },
+      nfl: {
+        boardId: 'nfl-live-board',
+        railLabel: 'NFL',
+        fetcher: fetchFootballGames,
+        filter: game => true
+      },
+      mlb: {
+        boardId: 'mlb-live-board',
+        railLabel: 'MLB',
+        fetcher: fetchBaseballGames,
+        filter: game => true
+      },
+      nhl: {
+        boardId: 'nhl-live-board',
+        railLabel: 'NHL',
+        fetcher: fetchHockeyGames,
+        filter: game => true
+      },
+      wnba: {
+        boardId: 'wnba-live-board',
+        railLabel: 'WNBA',
+        fetcher: fetchBasketballGames,
+        filter: game => ((game.league && game.league.name) || '').toUpperCase().includes('WNBA')
+      }
+    };
+
+    const state = { activeTab: 'nba', cache: {}, quickRail: document.getElementById('sports-quick-rail') };
     const tabs = document.querySelectorAll('[data-sports-tab]');
     const panels = document.querySelectorAll('[data-sports-panel]');
     const sportsLastUpdated = document.getElementById('sportsLastUpdated');
+    const refreshBtn = document.getElementById('sportsRefreshBtn');
+    const refreshAllBtn = document.getElementById('sportsRefreshAllBtn');
+    const topScroller = document.querySelector('#sports-live-scores .sports-live-scroller');
+    const playoffTracker = document.getElementById('nba-playoff-tracker');
 
-    function activateSportsTab(tabName) {
-      tabs.forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.sportsTab === tabName);
-      });
+    function todayString() {
+      const now = new Date();
+      const laString = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+      const la = new Date(laString);
+      const y = la.getFullYear();
+      const m = String(la.getMonth() + 1).padStart(2, '0');
+      const d = String(la.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
 
-      panels.forEach(panel => {
-        panel.classList.toggle('active', panel.dataset.sportsPanel === tabName);
-      });
+    async function fetchJson(url) {
+      const res = await fetch(url, { headers: { 'x-apisports-key': SPORTS_API_KEY } });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    }
 
-      if (sportsLastUpdated) {
-        const now = new Date();
-        sportsLastUpdated.textContent = 'Viewing: ' + tabName.toUpperCase() + ' • ' + now.toLocaleString();
+    async function fetchBasketballGames() {
+      const data = await fetchJson(`https://v1.basketball.api-sports.io/games?date=${todayString()}`);
+      return Array.isArray(data.response) ? data.response : [];
+    }
+
+    async function fetchFootballGames() {
+      const data = await fetchJson(`https://v1.american-football.api-sports.io/games?date=${todayString()}`);
+      return Array.isArray(data.response) ? data.response : [];
+    }
+
+    async function fetchBaseballGames() {
+      const data = await fetchJson(`https://v1.baseball.api-sports.io/games?date=${todayString()}`);
+      return Array.isArray(data.response) ? data.response : [];
+    }
+
+    async function fetchHockeyGames() {
+      const data = await fetchJson(`https://v1.hockey.api-sports.io/games?date=${todayString()}`);
+      return Array.isArray(data.response) ? data.response : [];
+    }
+
+    function formatStatus(text) {
+      const value = (text || 'Scheduled').toString().trim();
+      return value.length > 40 ? value.slice(0, 40) + '…' : value;
+    }
+
+    function statusClass(text) {
+      const value = (text || '').toLowerCase();
+      if (value.includes('final') || value.includes('finished') || value === 'ft') return 'sports-status final';
+      if (value.includes('live') || value.includes('quarter') || value.includes('period') || value.includes('inning') || value.includes('ot') || value.includes('half')) return 'sports-status live';
+      return 'sports-status';
+    }
+
+    function getLeagueName(game, fallback) {
+      return (game.league && (game.league.name || game.league)) || fallback || 'League';
+    }
+
+    function getStatus(game) {
+      return game.status?.long || game.status?.short || game.status || game.time || 'Scheduled';
+    }
+
+    function getTeamsAndScores(game, tabName) {
+      if (tabName === 'nba' || tabName === 'wnba') {
+        return {
+          away: game.teams?.away?.name || 'Away',
+          home: game.teams?.home?.name || 'Home',
+          awayScore: game.scores?.away?.total ?? game.scores?.away?.points ?? '-',
+          homeScore: game.scores?.home?.total ?? game.scores?.home?.points ?? '-',
+          extra: getLeagueName(game, 'Basketball')
+        };
+      }
+      if (tabName === 'mlb') {
+        return {
+          away: game.teams?.away?.name || 'Away',
+          home: game.teams?.home?.name || 'Home',
+          awayScore: game.scores?.away?.total ?? game.scores?.away?.hits ?? '-',
+          homeScore: game.scores?.home?.total ?? game.scores?.home?.hits ?? '-',
+          extra: getLeagueName(game, 'Baseball')
+        };
+      }
+      if (tabName === 'nhl') {
+        return {
+          away: game.teams?.away?.name || 'Away',
+          home: game.teams?.home?.name || 'Home',
+          awayScore: game.scores?.away ?? game.goals?.away ?? '-',
+          homeScore: game.scores?.home ?? game.goals?.home ?? '-',
+          extra: getLeagueName(game, 'Hockey')
+        };
+      }
+      return {
+        away: game.teams?.away?.name || 'Away',
+        home: game.teams?.home?.name || 'Home',
+        awayScore: game.scores?.away?.total ?? game.scores?.away ?? '-',
+        homeScore: game.scores?.home?.total ?? game.scores?.home ?? '-',
+        extra: getLeagueName(game, 'Football')
+      };
+    }
+
+    function gameCard(game, tabName) {
+      const info = getTeamsAndScores(game, tabName);
+      const status = formatStatus(getStatus(game));
+      const league = getLeagueName(game, SPORTS_CONFIG[tabName].railLabel);
+      const when = game.date ? new Date(game.date).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : '';
+      return `
+        <article class="sports-game-card">
+          <div class="sports-game-head">
+            <span class="sports-league-badge">${league}</span>
+            <span class="${statusClass(status)}">${status}</span>
+          </div>
+          <div class="sports-game-lines">
+            <div class="sports-team-row">
+              <div class="sports-team-name">${info.away}</div>
+              <div class="sports-team-score">${info.awayScore}</div>
+            </div>
+            <div class="sports-team-row">
+              <div class="sports-team-name">${info.home}</div>
+              <div class="sports-team-score">${info.homeScore}</div>
+            </div>
+          </div>
+          <div class="sports-game-meta">
+            <span>${info.extra}</span>
+            <span>${when}</span>
+          </div>
+        </article>`;
+    }
+
+    function renderBoard(tabName, games) {
+      const board = document.getElementById(SPORTS_CONFIG[tabName].boardId);
+      if (!board) return;
+      if (!games.length) {
+        board.innerHTML = `<div class="sports-empty-state">No ${tabName.toUpperCase()} games were returned for ${todayString()}. Try the refresh button later in the day.</div>`;
+        return;
+      }
+      board.innerHTML = games.slice(0, 10).map(game => gameCard(game, tabName)).join('');
+    }
+
+    function renderQuickRail(tabName, games) {
+      if (!state.quickRail) return;
+      if (!games.length) {
+        state.quickRail.innerHTML = `<div class="sports-empty-state">No quick-rail games loaded yet.</div>`;
+        return;
+      }
+      state.quickRail.innerHTML = games.slice(0, 3).map(game => gameCard(game, tabName)).join('');
+    }
+
+    function renderTopScroller(tabName, games) {
+      if (!topScroller) return;
+      if (!games.length) {
+        topScroller.innerHTML = `<div class="sports-score-chip"><div class="league">${tabName.toUpperCase()}</div><div class="matchup">No games found</div><div class="state">Try refreshing later</div></div>`;
+        return;
+      }
+      topScroller.innerHTML = games.slice(0, 6).map(game => {
+        const info = getTeamsAndScores(game, tabName);
+        return `<div class="sports-score-chip"><div class="league">${tabName.toUpperCase()}</div><div class="matchup">${info.away} ${info.awayScore} · ${info.home} ${info.homeScore}</div><div class="state">${formatStatus(getStatus(game))}</div></div>`;
+      }).join('');
+    }
+
+    function renderPlayoffTracker(games) {
+      if (!playoffTracker) return;
+      if (!games.length) {
+        playoffTracker.innerHTML = `<div class="sports-empty-state">No playoff-tagged NBA games were returned today. Use the official bracket button for the full bracket.</div>`;
+        return;
+      }
+      playoffTracker.innerHTML = games.slice(0, 6).map(game => gameCard(game, 'nba')).join('');
+    }
+
+    async function loadLeague(tabName, force = false) {
+      const config = SPORTS_CONFIG[tabName];
+      const cacheKey = `${tabName}:${todayString()}`;
+      const cached = state.cache[cacheKey];
+      const now = Date.now();
+      if (!force && cached && (now - cached.at) < 5 * 60 * 1000) {
+        renderBoard(tabName, cached.games);
+        renderQuickRail(tabName, cached.games);
+        renderTopScroller(tabName, cached.games);
+        if (tabName === 'nba') renderPlayoffTracker(cached.playoffGames || []);
+        updateLastUpdated(tabName, cached.games.length, false);
+        return;
+      }
+      const board = document.getElementById(config.boardId);
+      if (board) board.innerHTML = `<div class="sports-empty-state">Loading ${tabName.toUpperCase()} games…</div>`;
+      try {
+        const raw = await config.fetcher();
+        const filtered = raw.filter(config.filter || (() => true));
+        const playoffGames = tabName === 'nba' ? raw.filter(config.playoffFilter || (() => false)) : [];
+        state.cache[cacheKey] = { at: now, games: filtered, playoffGames };
+        renderBoard(tabName, filtered);
+        renderQuickRail(tabName, filtered);
+        renderTopScroller(tabName, filtered);
+        if (tabName === 'nba') renderPlayoffTracker(playoffGames);
+        updateLastUpdated(tabName, filtered.length, true);
+      } catch (error) {
+        if (board) board.innerHTML = `<div class="sports-empty-state">Failed to load ${tabName.toUpperCase()} scores right now. This usually means the free API quota is exhausted or the API did not return a response.</div>`;
+        if (tabName === 'nba') renderPlayoffTracker([]);
+        if (sportsLastUpdated) sportsLastUpdated.textContent = `Load failed for ${tabName.toUpperCase()} • check quota / key`;
       }
     }
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => activateSportsTab(tab.dataset.sportsTab));
+    function updateLastUpdated(tabName, count, fresh) {
+      if (!sportsLastUpdated) return;
+      const now = new Date();
+      sportsLastUpdated.textContent = `${tabName.toUpperCase()} • ${count} game${count === 1 ? '' : 's'} • ${fresh ? 'fresh pull' : 'cached'} • ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+    }
+
+    function activateSportsTab(tabName) {
+      state.activeTab = tabName;
+      tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.sportsTab === tabName));
+      panels.forEach(panel => panel.classList.toggle('active', panel.dataset.sportsPanel === tabName));
+      loadLeague(tabName);
+    }
+
+    tabs.forEach(tab => tab.addEventListener('click', () => activateSportsTab(tab.dataset.sportsTab)));
+    refreshBtn?.addEventListener('click', () => loadLeague(state.activeTab, true));
+    refreshAllBtn?.addEventListener('click', async () => {
+      for (const tabName of Object.keys(SPORTS_CONFIG)) {
+        await loadLeague(tabName, true);
+      }
+      activateSportsTab(state.activeTab);
     });
 
     activateSportsTab('nba');
+    setInterval(() => loadLeague(state.activeTab, true), 5 * 60 * 1000);
   })();
 </script>
-
-<!-- SPORTRADAR LOADER: REPLACE YOUR_CLIENT_ALIAS WITH YOUR REAL ALIAS -->
-<!-- LIVE SPORTS WIDGET LOADER
-Replace YOUR_CLIENT_ALIAS with your real vendor alias and then add your official widget snippets in the sports boxes above.
-<script
-  type="application/javascript"
-  src="https://widgets.media.sportradar.com/YOUR_CLIENT_ALIAS/widgetloader"
-  data-sr-language="en_us"
-  async>
-</script>
--->
-
 </body>
 </html>
