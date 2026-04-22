@@ -1661,349 +1661,439 @@
       grid-template-columns:1fr;
     }
   }
+.sports-team-logo{
+  width:26px;
+  height:26px;
+}
+.sports-chip-teamline,
+.sports-game-team-left,
+.sports-bracket-team-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.sports-score-chip-upgraded{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.sports-game-card-pro,
+.sports-bracket-card-pro{
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+
+.sports-game-team-pro,
+.sports-bracket-team-pro{
+  align-items:center;
+}
+  .sports-game-card-pro{
+  padding:16px;
+  transition:0.2s;
+}
+
+.sports-game-card-pro:hover{
+  transform:translateY(-2px);
+}
 </style>
 
 <script>
-  (function(){
-    const API_SPORTS_KEY = window.API_SPORTS_KEY || "7d8d1ab645e92235b445a0e325c7511c";
-   function getLocalDateString() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+(function () {
+  const API_SPORTS_KEY = window.API_SPORTS_KEY || "7d8d1ab645e92235b445a0e325c7511c";
 
+  function getLocalDateString() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
-const ACTIVE_DATE = getLocalDateString();
-    const SPORTS_API_HOSTS = {
-      nba: "v1.basketball.api-sports.io",
-      nfl: "v1.american-football.api-sports.io",
-      mlb: "v1.baseball.api-sports.io",
-      nhl: "v1.hockey.api-sports.io",
-      wnba: "v1.basketball.api-sports.io"
+  const ACTIVE_DATE = getLocalDateString();
+
+  const state = {
+    activeLeague: "nba",
+    cache: {},
+    playoffSeries: {
+      east: [
+        { key: "DET-ORL", round: "Round 1", topSeed: 1, topTeam: "Pistons", bottomSeed: 8, bottomTeam: "Magic", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
+        { key: "CLE-TOR", round: "Round 1", topSeed: 4, topTeam: "Cavaliers", bottomSeed: 5, bottomTeam: "Raptors", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
+        { key: "NYK-ATL", round: "Round 1", topSeed: 3, topTeam: "Knicks", bottomSeed: 6, bottomTeam: "Hawks", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
+        { key: "BOS-PHI", round: "Round 1", topSeed: 2, topTeam: "Celtics", bottomSeed: 7, bottomTeam: "76ers", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" }
+      ],
+      west: [
+        { key: "OKC-PHX", round: "Round 1", topSeed: 1, topTeam: "Thunder", bottomSeed: 8, bottomTeam: "Suns", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
+        { key: "SAS-POR", round: "Round 1", topSeed: 2, topTeam: "Spurs", bottomSeed: 7, bottomTeam: "Trail Blazers", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
+        { key: "DEN-MIN", round: "Round 1", topSeed: 3, topTeam: "Nuggets", bottomSeed: 6, bottomTeam: "Timberwolves", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
+        { key: "LAL-HOU", round: "Round 1", topSeed: 4, topTeam: "Lakers", bottomSeed: 5, bottomTeam: "Rockets", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" }
+      ]
+    }
+  };
+
+  const TEAM_LOGOS = {
+    "Pistons": "https://a.espncdn.com/i/teamlogos/nba/500/det.png",
+    "Magic": "https://a.espncdn.com/i/teamlogos/nba/500/orl.png",
+    "Cavaliers": "https://a.espncdn.com/i/teamlogos/nba/500/cle.png",
+    "Raptors": "https://a.espncdn.com/i/teamlogos/nba/500/tor.png",
+    "Knicks": "https://a.espncdn.com/i/teamlogos/nba/500/ny.png",
+    "Hawks": "https://a.espncdn.com/i/teamlogos/nba/500/atl.png",
+    "Celtics": "https://a.espncdn.com/i/teamlogos/nba/500/bos.png",
+    "76ers": "https://a.espncdn.com/i/teamlogos/nba/500/phi.png",
+    "Thunder": "https://a.espncdn.com/i/teamlogos/nba/500/okc.png",
+    "Suns": "https://a.espncdn.com/i/teamlogos/nba/500/phx.png",
+    "Spurs": "https://a.espncdn.com/i/teamlogos/nba/500/sa.png",
+    "Trail Blazers": "https://a.espncdn.com/i/teamlogos/nba/500/por.png",
+    "Nuggets": "https://a.espncdn.com/i/teamlogos/nba/500/den.png",
+    "Timberwolves": "https://a.espncdn.com/i/teamlogos/nba/500/min.png",
+    "Lakers": "https://a.espncdn.com/i/teamlogos/nba/500/lal.png",
+    "Rockets": "https://a.espncdn.com/i/teamlogos/nba/500/hou.png"
+  };
+
+  const tabsEl = document.getElementById("sportsTabs");
+  const scoreRailEl = document.getElementById("sportsScoreRail");
+  const quickRailEl = document.getElementById("sports-quick-rail");
+  const leagueBoardEl = document.getElementById("sportsLeagueBoard");
+  const metaTextEl = document.getElementById("sportsMetaText");
+  const lastUpdatedEl = document.getElementById("sportsLastUpdated");
+  const feedStatusEl = document.getElementById("sportsFeedStatus");
+  const eastBracketEl = document.getElementById("nbaBracketEast");
+  const westBracketEl = document.getElementById("nbaBracketWest");
+  const refreshBtn = document.getElementById("sportsRefreshBtn");
+  const refreshAllBtn = document.getElementById("sportsRefreshAllBtn");
+
+  function updateTimeStamp(label) {
+    const now = new Date();
+    lastUpdatedEl.textContent = now.toLocaleString([], {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
+    metaTextEl.textContent = label;
+  }
+
+  function getHeaders() {
+    return {
+      "x-apisports-key": API_SPORTS_KEY
     };
+  }
 
-    const state = {
-      activeLeague: "nba",
-      cache: {},
-      playoffSeries: {
-        east: [
-          { key: "DET-ORL", round: "Round 1", topSeed: 1, topTeam: "Pistons", bottomSeed: 8, bottomTeam: "Magic", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
-          { key: "CLE-TOR", round: "Round 1", topSeed: 4, topTeam: "Cavaliers", bottomSeed: 5, bottomTeam: "Raptors", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
-          { key: "NYK-ATL", round: "Round 1", topSeed: 3, topTeam: "Knicks", bottomSeed: 6, bottomTeam: "Hawks", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
-          { key: "BOS-PHI", round: "Round 1", topSeed: 2, topTeam: "Celtics", bottomSeed: 7, bottomTeam: "76ers", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" }
-        ],
-west: [
-  { key: "OKC-PHX", round: "Round 1", topSeed: 1, topTeam: "Thunder", bottomSeed: 8, bottomTeam: "Suns", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
-  { key: "SAS-POR", round: "Round 1", topSeed: 2, topTeam: "Spurs", bottomSeed: 7, bottomTeam: "Trail Blazers", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
-  { key: "DEN-MIN", round: "Round 1", topSeed: 3, topTeam: "Nuggets", bottomSeed: 6, bottomTeam: "Timberwolves", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" },
-  { key: "LAL-HOU", round: "Round 1", topSeed: 4, topTeam: "Lakers", bottomSeed: 5, bottomTeam: "Rockets", winsTop: 0, winsBottom: 0, nextGame: "Waiting for update", status: "Series open" }
-]
-      }
-    };
+  function safeArray(value) {
+    return Array.isArray(value) ? value : [];
+  }
 
-    const tabsEl = document.getElementById("sportsTabs");
-    const scoreRailEl = document.getElementById("sportsScoreRail");
-    const quickRailEl = document.getElementById("sports-quick-rail");
-    const leagueBoardEl = document.getElementById("sportsLeagueBoard");
-    const metaTextEl = document.getElementById("sportsMetaText");
-    const lastUpdatedEl = document.getElementById("sportsLastUpdated");
-    const feedStatusEl = document.getElementById("sportsFeedStatus");
-    const eastBracketEl = document.getElementById("nbaBracketEast");
-    const westBracketEl = document.getElementById("nbaBracketWest");
-    const refreshBtn = document.getElementById("sportsRefreshBtn");
-    const refreshAllBtn = document.getElementById("sportsRefreshAllBtn");
+  function shortTeam(name) {
+    if (!name) return "Team";
+    return name
+      .replace("Portland Trail Blazers", "Trail Blazers")
+      .replace("Los Angeles Lakers", "Lakers")
+      .replace("Philadelphia 76ers", "76ers")
+      .replace("Boston Celtics", "Celtics")
+      .replace("San Antonio Spurs", "Spurs")
+      .replace("Houston Rockets", "Rockets")
+      .replace("Golden State Warriors", "Warriors")
+      .replace("Oklahoma City Thunder", "Thunder")
+      .replace("Minnesota Timberwolves", "Timberwolves")
+      .replace("Phoenix Suns", "Suns")
+      .replace("Detroit Pistons", "Pistons")
+      .replace("Orlando Magic", "Magic")
+      .replace("Cleveland Cavaliers", "Cavaliers")
+      .replace("Toronto Raptors", "Raptors")
+      .replace("New York Knicks", "Knicks")
+      .replace("Atlanta Hawks", "Hawks")
+      .replace("Denver Nuggets", "Nuggets");
+  }
 
-    function updateTimeStamp(label){
-      const now = new Date();
-      const pretty = now.toLocaleString([], {
+  function getLogo(teamName) {
+    return TEAM_LOGOS[shortTeam(teamName)] || "";
+  }
+
+  function formatStatus(game) {
+    return game.status?.long || game.status?.short || game.status?.type || "Scheduled";
+  }
+
+  function getTeamScore(side) {
+    return side?.points ?? side?.total ?? "-";
+  }
+
+  function renderRail(games, league) {
+    if (!games.length) {
+      scoreRailEl.innerHTML = `<div class="sports-empty">No ${league.toUpperCase()} games found for this date.</div>`;
+      return;
+    }
+
+    scoreRailEl.innerHTML = games.slice(0, 10).map(game => {
+      const home = shortTeam(game.teams?.home?.name || game.teams?.home?.nickname || "Home");
+      const away = shortTeam(game.teams?.away?.name || game.teams?.away?.nickname || "Away");
+      const homeScore = getTeamScore(game.scores?.home);
+      const awayScore = getTeamScore(game.scores?.away);
+      const status = formatStatus(game);
+
+      return `
+        <div class="sports-score-chip sports-score-chip-upgraded">
+          <div class="league">${league.toUpperCase()}</div>
+          <div class="sports-chip-teamline">
+            <img src="${getLogo(away)}" alt="${away} logo" class="sports-team-logo" />
+            <span>${away}</span>
+            <strong>${awayScore}</strong>
+          </div>
+          <div class="sports-chip-teamline">
+            <img src="${getLogo(home)}" alt="${home} logo" class="sports-team-logo" />
+            <span>${home}</span>
+            <strong>${homeScore}</strong>
+          </div>
+          <div class="state">${status}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderLeagueBoard(games, league) {
+    if (!games.length) {
+      leagueBoardEl.innerHTML = `<div class="sports-empty">No ${league.toUpperCase()} games available right now.</div>`;
+      quickRailEl.innerHTML = `<div class="sports-empty">No quick matchups available.</div>`;
+      return;
+    }
+
+    quickRailEl.innerHTML = games.slice(0, 4).map(game => {
+      const home = shortTeam(game.teams?.home?.name || "Home");
+      const away = shortTeam(game.teams?.away?.name || "Away");
+      const status = formatStatus(game);
+
+      return `
+        <div class="sports-game-card">
+          <div class="sports-game-head">
+            <span>${league.toUpperCase()}</span>
+            <span>${status}</span>
+          </div>
+          <div class="sports-game-matchup">${away} at ${home}</div>
+        </div>
+      `;
+    }).join("");
+
+    leagueBoardEl.innerHTML = games.map(game => {
+      const home = shortTeam(game.teams?.home?.name || "Home");
+      const away = shortTeam(game.teams?.away?.name || "Away");
+      const homeScore = getTeamScore(game.scores?.home);
+      const awayScore = getTeamScore(game.scores?.away);
+      const status = formatStatus(game);
+      const date = game.date ? new Date(game.date).toLocaleString([], {
         month: "short",
         day: "numeric",
         hour: "numeric",
         minute: "2-digit"
-      });
-      lastUpdatedEl.textContent = pretty;
-      metaTextEl.textContent = label;
-    }
+      }) : "";
 
-    function getHeaders(league){
-      return {
-        "x-apisports-key": API_SPORTS_KEY,
-        "x-rapidapi-key": API_SPORTS_KEY,
-        "x-rapidapi-host": SPORTS_API_HOSTS[league]
-      };
-    }
-
-    function safeArray(value){
-      return Array.isArray(value) ? value : [];
-    }
-
-    function shortTeam(name){
-      if(!name) return "Team";
-      return name.replace("Portland Trail Blazers", "Trail Blazers")
-        .replace("Los Angeles Lakers", "Lakers")
-        .replace("Philadelphia 76ers", "76ers")
-        .replace("Boston Celtics", "Celtics")
-        .replace("San Antonio Spurs", "Spurs")
-        .replace("Houston Rockets", "Rockets")
-        .replace("Minnesota Timberwolves", "Timberwolves")
-        .replace("Oklahoma City Thunder", "Thunder");
-    }
-
-    function renderRail(games, league){
-      if(!games.length){
-        scoreRailEl.innerHTML = `<div class="sports-empty">No ${league.toUpperCase()} games found for this date.</div>`;
-        return;
-      }
-
-      scoreRailEl.innerHTML = games.slice(0, 10).map(game => {
-        const home = game.teams?.home?.name || game.teams?.home?.nickname || "Home";
-        const away = game.teams?.away?.name || game.teams?.away?.nickname || "Away";
-        const homeScore = game.scores?.home?.points ?? game.scores?.home?.total ?? "-";
-        const awayScore = game.scores?.away?.points ?? game.scores?.away?.total ?? "-";
-        const status = game.status?.long || game.status?.short || game.status?.type || "Scheduled";
-
-        return `
-          <div class="sports-score-chip">
-            <div class="league">${league.toUpperCase()}</div>
-            <div class="matchup">${shortTeam(away)} vs ${shortTeam(home)}</div>
-            <div class="state">${awayScore} - ${homeScore} · ${status}</div>
+      return `
+        <div class="sports-game-card sports-game-card-pro">
+          <div class="sports-game-head">
+            <span>${league.toUpperCase()}</span>
+            <span>${status}</span>
           </div>
-        `;
-      }).join("");
-    }
 
-    function renderLeagueBoard(games, league){
-      if(!games.length){
-        leagueBoardEl.innerHTML = `<div class="sports-empty">No ${league.toUpperCase()} games available right now.</div>`;
-        quickRailEl.innerHTML = `<div class="sports-empty">No quick matchups available.</div>`;
-        return;
-      }
-
-      quickRailEl.innerHTML = games.slice(0, 4).map(game => {
-        const home = game.teams?.home?.name || "Home";
-        const away = game.teams?.away?.name || "Away";
-        const status = game.status?.long || game.status?.short || "Scheduled";
-        return `
-          <div class="sports-game-card">
-            <div class="sports-game-head">
-              <span>${league.toUpperCase()}</span>
-              <span>${status}</span>
-            </div>
-            <div class="sports-game-matchup">${shortTeam(away)} at ${shortTeam(home)}</div>
-          </div>
-        `;
-      }).join("");
-
-      leagueBoardEl.innerHTML = games.map(game => {
-        const home = game.teams?.home?.name || "Home";
-        const away = game.teams?.away?.name || "Away";
-        const homeScore = game.scores?.home?.points ?? game.scores?.home?.total ?? "-";
-        const awayScore = game.scores?.away?.points ?? game.scores?.away?.total ?? "-";
-        const status = game.status?.long || game.status?.short || game.status?.type || "Scheduled";
-        const date = game.date ? new Date(game.date).toLocaleString([], {
-          month: "short",
-          day: "numeric",
-          hour: "numeric",
-          minute: "2-digit"
-        }) : "";
-
-        return `
-          <div class="sports-game-card">
-            <div class="sports-game-head">
-              <span>${league.toUpperCase()}</span>
-              <span>${status}</span>
-            </div>
-            <div class="sports-game-matchup">${shortTeam(away)} at ${shortTeam(home)}</div>
-            <div class="sports-game-scoreline">
-              <div class="sports-game-team">
-                <strong>${shortTeam(away)}</strong>
-                <span>${awayScore}</span>
+          <div class="sports-game-scoreline">
+            <div class="sports-game-team sports-game-team-pro">
+              <div class="sports-game-team-left">
+                <img src="${getLogo(away)}" alt="${away} logo" class="sports-team-logo" />
+                <strong>${away}</strong>
               </div>
-              <div class="sports-game-team">
-                <strong>${shortTeam(home)}</strong>
-                <span>${homeScore}</span>
-              </div>
+              <span>${awayScore}</span>
             </div>
-            <div class="sports-bracket-next">${date}</div>
-          </div>
-        `;
-      }).join("");
-    }
 
-    function renderBracketSide(targetEl, seriesList){
-      targetEl.innerHTML = seriesList.map(series => `
-        <div class="sports-bracket-card">
-          <div class="sports-bracket-top">
-            <div class="sports-bracket-round">${series.round}</div>
-            <div class="sports-bracket-status">${series.status}</div>
+            <div class="sports-game-team sports-game-team-pro">
+              <div class="sports-game-team-left">
+                <img src="${getLogo(home)}" alt="${home} logo" class="sports-team-logo" />
+                <strong>${home}</strong>
+              </div>
+              <span>${homeScore}</span>
+            </div>
           </div>
 
-          <div class="sports-bracket-team">
-            <strong>(${series.topSeed}) ${series.topTeam}</strong>
-            <span>${series.winsTop}</span>
-          </div>
-
-          <div class="sports-bracket-team">
-            <strong>(${series.bottomSeed}) ${series.bottomTeam}</strong>
-            <span>${series.winsBottom}</span>
-          </div>
-
-          <div class="sports-bracket-next">${series.nextGame}</div>
+          <div class="sports-bracket-next">${date}</div>
         </div>
-      `).join("");
-    }
+      `;
+    }).join("");
+  }
 
-    function renderBracket(){
-      renderBracketSide(eastBracketEl, state.playoffSeries.east);
-      renderBracketSide(westBracketEl, state.playoffSeries.west);
-    }
+  function renderBracketSide(targetEl, seriesList) {
+    targetEl.innerHTML = seriesList.map(series => `
+      <div class="sports-bracket-card sports-bracket-card-pro">
+        <div class="sports-bracket-top">
+          <div class="sports-bracket-round">${series.round}</div>
+          <div class="sports-bracket-status">${series.status}</div>
+        </div>
 
-    function updateSeriesFromGames(games){
-      const allSeries = [...state.playoffSeries.east, ...state.playoffSeries.west];
+        <div class="sports-bracket-team sports-bracket-team-pro">
+          <div class="sports-bracket-team-left">
+            <img src="${getLogo(series.topTeam)}" alt="${series.topTeam} logo" class="sports-team-logo" />
+            <strong>(${series.topSeed}) ${series.topTeam}</strong>
+          </div>
+          <span>${series.winsTop}</span>
+        </div>
 
-      allSeries.forEach(series => {
-        const relatedGames = games.filter(game => {
-          const home = shortTeam(game.teams?.home?.name || "");
-          const away = shortTeam(game.teams?.away?.name || "");
-          const names = [home, away].join("|").toLowerCase();
+        <div class="sports-bracket-team sports-bracket-team-pro">
+          <div class="sports-bracket-team-left">
+            <img src="${getLogo(series.bottomTeam)}" alt="${series.bottomTeam} logo" class="sports-team-logo" />
+            <strong>(${series.bottomSeed}) ${series.bottomTeam}</strong>
+          </div>
+          <span>${series.winsBottom}</span>
+        </div>
 
-          return (
-            names.includes(series.topTeam.toLowerCase()) &&
-            names.includes(series.bottomTeam.toLowerCase())
-          );
-        });
+        <div class="sports-bracket-next">${series.nextGame}</div>
+      </div>
+    `).join("");
+  }
 
-        let winsTop = 0;
-        let winsBottom = 0;
-        let nextGame = "Next game not posted yet";
-        let status = "Series open";
+  function renderBracket() {
+    renderBracketSide(eastBracketEl, state.playoffSeries.east);
+    renderBracketSide(westBracketEl, state.playoffSeries.west);
+  }
 
-        relatedGames.forEach(game => {
-          const home = shortTeam(game.teams?.home?.name || "");
-          const away = shortTeam(game.teams?.away?.name || "");
-          const homeScore = Number(game.scores?.home?.points ?? game.scores?.home?.total ?? 0);
-          const awayScore = Number(game.scores?.away?.points ?? game.scores?.away?.total ?? 0);
-          const gameStatus = (game.status?.long || game.status?.short || "").toLowerCase();
+  function updateSeriesFromGames(games) {
+    const allSeries = [...state.playoffSeries.east, ...state.playoffSeries.west];
 
-          if(gameStatus.includes("final") || gameStatus.includes("finished")){
-            const winner = homeScore > awayScore ? home : away;
-            if(winner.toLowerCase().includes(series.topTeam.toLowerCase())) winsTop += 1;
-            if(winner.toLowerCase().includes(series.bottomTeam.toLowerCase())) winsBottom += 1;
-          } else {
-            const dateText = game.date ? new Date(game.date).toLocaleString([], {
-              month: "short",
-              day: "numeric",
-              hour: "numeric",
-              minute: "2-digit"
-            }) : "Upcoming";
-            nextGame = `Next: ${dateText}`;
-            status = game.status?.long || "Upcoming";
-          }
-        });
-
-        if(winsTop >= 4) status = `${series.topTeam} won series`;
-        if(winsBottom >= 4) status = `${series.bottomTeam} won series`;
-
-        if(relatedGames.length){
-          series.winsTop = winsTop;
-          series.winsBottom = winsBottom;
-          series.nextGame = nextGame;
-          series.status = status;
-        }
+    allSeries.forEach(series => {
+      const relatedGames = games.filter(game => {
+        const home = shortTeam(game.teams?.home?.name || "");
+        const away = shortTeam(game.teams?.away?.name || "");
+        return (
+          [home, away].includes(series.topTeam) &&
+          [home, away].includes(series.bottomTeam)
+        );
       });
 
-      renderBracket();
-    }
+      let winsTop = 0;
+      let winsBottom = 0;
+      let nextGame = "Next game not posted yet";
+      let status = "Series open";
 
-    async function fetchNbaGames(){
-      const season = "2025";
-      const url = `https://v1.basketball.api-sports.io/games?league=12&season=${season}&date=${ACTIVE_DATE}`;
+      relatedGames.forEach(game => {
+        const home = shortTeam(game.teams?.home?.name || "");
+        const away = shortTeam(game.teams?.away?.name || "");
+        const homeScore = Number(getTeamScore(game.scores?.home)) || 0;
+        const awayScore = Number(getTeamScore(game.scores?.away)) || 0;
+        const gameStatus = formatStatus(game).toLowerCase();
 
-      const res = await fetch(url, {
-        method: "GET",
-        headers: getHeaders("nba"),
-        cache: "no-store"
-      });
-
-      const data = await res.json();
-      const games = safeArray(data.response).sort((a, b) => {
-        return new Date(a.date || 0) - new Date(b.date || 0);
-      });
-
-      state.cache.nba = games;
-      renderRail(games, "nba");
-      renderLeagueBoard(games, "nba");
-      updateSeriesFromGames(games);
-      updateTimeStamp("NBA live scoreboard");
-      feedStatusEl.textContent = "NBA feed active.";
-    }
-
-    async function fetchOtherLeague(league){
-      const placeholders = {
-        nfl: [{ teams:{away:{name:"NFL Sunday Ticket"},home:{name:"League Dashboard"}}, scores:{away:{total:"—"},home:{total:"—"}}, status:{long:"Schedule module coming next"} }],
-        mlb: [{ teams:{away:{name:"Dodgers"},home:{name:"Padres"}}, scores:{away:{total:"—"},home:{total:"—"}}, status:{long:"MLB module next"} }],
-        nhl: [{ teams:{away:{name:"Oilers"},home:{name:"Kings"}}, scores:{away:{total:"—"},home:{total:"—"}}, status:{long:"NHL module next"} }],
-        wnba: [{ teams:{away:{name:"Opening Slate"},home:{name:"WNBA Hub"}}, scores:{away:{total:"—"},home:{total:"—"}}, status:{long:"WNBA module next"} }]
-      };
-
-      state.cache[league] = placeholders[league] || [];
-    }
-
-    async function loadLeague(league){
-      state.activeLeague = league;
-
-      document.querySelectorAll(".sports-tab").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.sportsTab === league);
-      });
-
-      try {
-        feedStatusEl.textContent = `Loading ${league.toUpperCase()} feed...`;
-
-        if(league === "nba"){
-          await fetchNbaGames();
+        if (gameStatus.includes("final") || gameStatus.includes("finished")) {
+          const winner = homeScore > awayScore ? home : away;
+          if (winner === series.topTeam) winsTop += 1;
+          if (winner === series.bottomTeam) winsBottom += 1;
         } else {
-          if(!state.cache[league]) await fetchOtherLeague(league);
-          renderRail(state.cache[league], league);
-          renderLeagueBoard(state.cache[league], league);
-          updateTimeStamp(`${league.toUpperCase()} league board`);
-          feedStatusEl.textContent = `${league.toUpperCase()} section active.`;
+          const dateText = game.date ? new Date(game.date).toLocaleString([], {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+          }) : "Upcoming";
+          nextGame = `Next: ${dateText}`;
+          status = formatStatus(game);
         }
-      } catch (error) {
-        console.error(error);
-        feedStatusEl.textContent = `${league.toUpperCase()} feed failed to load. Check API key or request limits.`;
-        renderRail([], league);
-        renderLeagueBoard([], league);
+      });
+
+      if (winsTop >= 4) status = `${series.topTeam} won series`;
+      if (winsBottom >= 4) status = `${series.bottomTeam} won series`;
+
+      if (relatedGames.length) {
+        series.winsTop = winsTop;
+        series.winsBottom = winsBottom;
+        series.nextGame = nextGame;
+        series.status = status;
       }
-    }
-
-    async function refreshAllLeagues(){
-      state.cache = {};
-      await fetchOtherLeague("nfl");
-      await fetchOtherLeague("mlb");
-      await fetchOtherLeague("nhl");
-      await fetchOtherLeague("wnba");
-      await loadLeague(state.activeLeague);
-    }
-
-    tabsEl?.addEventListener("click", (event) => {
-      const btn = event.target.closest(".sports-tab");
-      if(!btn) return;
-      loadLeague(btn.dataset.sportsTab);
     });
 
-    refreshBtn?.addEventListener("click", () => loadLeague(state.activeLeague));
-    refreshAllBtn?.addEventListener("click", refreshAllLeagues);
-
     renderBracket();
-    loadLeague("nba");
-    setInterval(() => {
-      if(state.activeLeague === "nba") loadLeague("nba");
-    }, 60000);
-  })();
-</script>
+  }
 
+  async function fetchNbaGames() {
+    const season = "2025";
+    const url = `https://v1.basketball.api-sports.io/games?league=12&season=${season}&last=50`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: getHeaders(),
+      cache: "no-store"
+    });
+
+    if (!res.ok) {
+      throw new Error(`NBA API failed: ${res.status}`);
+    }
+
+    const data = await res.json();
+    const games = safeArray(data.response).sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
+
+    state.cache.nba = games;
+    renderRail(games, "nba");
+    renderLeagueBoard(games, "nba");
+    updateSeriesFromGames(games);
+    updateTimeStamp("NBA live scoreboard");
+    feedStatusEl.textContent = "NBA feed active.";
+  }
+
+  async function fetchOtherLeague(league) {
+    const placeholders = {
+      nfl: [{ teams:{away:{name:"NFL coming"},home:{name:"soon"}}, scores:{away:{total:"—"},home:{total:"—"}}, status:{long:"NFL module next"} }],
+      mlb: [{ teams:{away:{name:"MLB coming"},home:{name:"soon"}}, scores:{away:{total:"—"},home:{total:"—"}}, status:{long:"MLB module next"} }],
+      nhl: [{ teams:{away:{name:"NHL coming"},home:{name:"soon"}}, scores:{away:{total:"—"},home:{total:"—"}}, status:{long:"NHL module next"} }],
+      wnba: [{ teams:{away:{name:"WNBA coming"},home:{name:"soon"}}, scores:{away:{total:"—"},home:{total:"—"}}, status:{long:"WNBA module next"} }]
+    };
+    state.cache[league] = placeholders[league] || [];
+  }
+
+  async function loadLeague(league) {
+    state.activeLeague = league;
+
+    document.querySelectorAll(".sports-tab").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.sportsTab === league);
+    });
+
+    try {
+      feedStatusEl.textContent = `Loading ${league.toUpperCase()} feed...`;
+
+      if (league === "nba") {
+        await fetchNbaGames();
+      } else {
+        if (!state.cache[league]) await fetchOtherLeague(league);
+        renderRail(state.cache[league], league);
+        renderLeagueBoard(state.cache[league], league);
+        updateTimeStamp(`${league.toUpperCase()} league board`);
+        feedStatusEl.textContent = `${league.toUpperCase()} section active.`;
+      }
+    } catch (error) {
+      console.error(error);
+      feedStatusEl.textContent = `${league.toUpperCase()} feed failed to load. Check API key or request limits.`;
+      scoreRailEl.innerHTML = `<div class="sports-empty">Live NBA scoreboard failed to load.</div>`;
+      leagueBoardEl.innerHTML = `<div class="sports-empty">Check your API key, quota, or request headers.</div>`;
+      quickRailEl.innerHTML = `<div class="sports-empty">No quick matchups available.</div>`;
+    }
+  }
+
+  async function refreshAllLeagues() {
+    state.cache = {};
+    await fetchOtherLeague("nfl");
+    await fetchOtherLeague("mlb");
+    await fetchOtherLeague("nhl");
+    await fetchOtherLeague("wnba");
+    await loadLeague(state.activeLeague);
+  }
+
+  tabsEl?.addEventListener("click", (event) => {
+    const btn = event.target.closest(".sports-tab");
+    if (!btn) return;
+    loadLeague(btn.dataset.sportsTab);
+  });
+
+  refreshBtn?.addEventListener("click", () => loadLeague(state.activeLeague));
+  refreshAllBtn?.addEventListener("click", refreshAllLeagues);
+
+  renderBracket();
+  loadLeague("nba");
+
+  setInterval(() => {
+    if (state.activeLeague === "nba") loadLeague("nba");
+  }, 120000);
+})();
+</script>
   <!-- BETTING -->
   <section id="betting" class="section">
     <div class="container">
